@@ -1,0 +1,114 @@
+<div class="login-page-wrapper px-3 vh-100 d-flex justify-content-center align-items-center">
+    <div class="login-container card">
+        <div class="card-body">
+            <img
+                src="../../../assets/images/logo-horizontal.svg"
+                class="logo mb-4"
+                alt="Lee County Public Library" />
+
+            <h1 class="h5 mb-3">Login</h1>
+
+            <form
+                [formGroup]="loginForm"
+                (ngSubmit)="onSubmit()"
+                class="d-flex flex-column">
+                <div class="mb-4">
+                    <label
+                        for="loginEmail"
+                        class="form-label w-100">
+                        Email</label
+                    >
+
+                    <input
+                        type="text"
+                        id="loginEmail"
+                        formControlName="email"
+                        class="form-control"
+                        [class.is-invalid]="email?.touched && email?.invalid"
+                        required
+                        aria-describedby="emailError" />
+
+                    @if(email?.invalid && (email?.touched || email?.dirty)) { @if (email?.hasError('required')) {
+                    <div
+                        id="emailError"
+                        class="error-msg"
+                        role="alert"
+                        data-testId="errorMsg">
+                        {{ errorMessages.required("Email") }}
+                    </div>
+                    } @else if (email?.hasError('minlength')) {
+                    <div
+                        id="emailError"
+                        class="error-msg"
+                        role="alert">
+                        {{ errorMessages.minlength("Email", 8) }}
+                    </div>
+                    } }
+                </div>
+
+                <div class="mb-4">
+                    <label
+                        for="loginPassword"
+                        class="form-label w-100">
+                        Password</label
+                    >
+                    <input
+                        type="password"
+                        class="form-control"
+                        id="loginPassword"
+                        formControlName="password"
+                        [class.is-invalid]="password?.touched && password?.invalid"
+                        required
+                        aria-describedby="passwordError" />
+
+                    @if (password?.invalid && (password?.touched || password?.dirty)) { @if
+                    (password?.hasError('required')) {
+                    <div
+                        id="passwordError"
+                        class="error-msg"
+                        role="alert">
+                        {{ errorMessages.required("Password") }}
+                    </div>
+                    } @else if (password?.hasError('minlength')) {
+                    <div
+                        id="passwordError"
+                        class="error-msg"
+                        role="alert">
+                        {{ errorMessages.minlength("Password", 8) }}
+                    </div>
+                    } }
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary btn-login"
+                    [disabled]="$isLoading()"
+                    data-test-id="loginButton">
+                    Login
+
+                    <div
+                        *ngIf="$isLoading()"
+                        class="loading-icon spinner-border spinner-border-sm"
+                        role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </button>
+
+                @if ($formErrorMessage()) {
+                <div
+                    class="error-msg"
+                    role="alert"
+                    data-testId="formErrorMessage">
+                    {{ $formErrorMessage() }}
+                </div>
+                } @if ($isLoginSuccessful()) {
+                <p>Hello, {{ $user().first_name }}! You are now logged in!</p>
+                }
+            </form>
+
+            <div class="login-actions text-center mt-3">
+                <a href="#">Register</a>
+            </div>
+        </div>
+    </div>
+</div>

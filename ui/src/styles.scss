@@ -1,0 +1,39 @@
+@import "./styles/variables"; // keep after BS mixin/function imports
+@import "bootstrap/scss/bootstrap"; // keep at end of all BS overrides
+
+@layer component, reset;
+
+/* prettier-ignore */
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
+    font-weight: 600;
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+@layer component {
+    .error-msg {
+        color: map-get($theme-colors, "danger");
+    }
+
+    .btn {
+        position: relative;
+
+        .loading-icon {
+            position: absolute;
+            top: 0.5rem;
+            margin-left: 0.5rem;
+        }
+    }
+}
+
+@layer reset {
+    html,
+    body {
+        height: 100%;
+    }
+    body {
+        margin: 0;
+    }
+}

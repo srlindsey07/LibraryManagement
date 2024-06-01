@@ -1,0 +1,35 @@
+@layer component {
+    .login-page-wrapper {
+        &:before {
+            content: "";
+            background-image: url("../../../assets/images/library.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            filter: blur(3px);
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+
+            .logo {
+                width: 70%;
+                display: block;
+                margin: 0 auto;
+            }
+
+            .btn-login {
+                position: relative;
+            }
+        }
+    }
+}
