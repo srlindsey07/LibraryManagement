@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { createExpressAppInstance, getExpressAppInstance } from "./app-instance";
 import { pgConnectionOptions } from './data-sources';
+import type { DataSourceOptions } from "typeorm";
 
 dotenv.config();
 const { PORT } = process.env;
@@ -8,14 +9,14 @@ const { PORT } = process.env;
 /**
  * Create Express app if an instance does not already exist.
  */
-const initAppAndListen = async () => {
+export const initAppAndListen = async (connectionOptions: DataSourceOptions, port: number) => {
     let expressApp = getExpressAppInstance();
 
     if (!expressApp) {
-        expressApp = createExpressAppInstance(pgConnectionOptions);
+        expressApp = createExpressAppInstance(connectionOptions);
         await expressApp.initializeApp();
     }
 
-    await expressApp.startListening(parseInt(PORT) || 3000);
+    await expressApp.startListening(port);
 }
-initAppAndListen();
+initAppAndListen(pgConnectionOptions, parseInt(PORT) || 3000);

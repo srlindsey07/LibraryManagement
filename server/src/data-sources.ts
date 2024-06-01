@@ -1,15 +1,15 @@
 import User from "./entities/User";
 import dotenv from "dotenv";
-import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 import { UserFactory } from "./seeding/user.factory";
-import { SeederOptions } from "typeorm-extension";
+import type { SeederOptions } from "typeorm-extension";
 import { UserSeeder } from "./seeding/user-seeder";
+import type { DataSourceOptions } from "typeorm";
 
 dotenv.config();
-const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
+const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE, NODE_ENV } = process.env;
 
-export const pgConnectionOptions: PostgresConnectionOptions & SeederOptions = {
-    name: "dev",
+export const pgConnectionOptions: DataSourceOptions = {
+    name: NODE_ENV,
     type: "postgres",
     host: DB_HOST,
     port: parseInt(DB_PORT || "5432"),
@@ -17,8 +17,12 @@ export const pgConnectionOptions: PostgresConnectionOptions & SeederOptions = {
     password: DB_PASSWORD,
     database: DB_DATABASE,
     synchronize: true,
-    logging: true,
+    dropSchema: NODE_ENV === "test",
+    logging: false,
     entities: [User],
+};
+
+export const seederOptions: SeederOptions = {
     factories: [UserFactory],
     seeds: [UserSeeder]
-};
+}

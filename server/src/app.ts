@@ -1,25 +1,31 @@
+import * as dotenv from 'dotenv';
 import "reflect-metadata";
 import express from "express";
-import { Express } from "express";
+import type { Express } from "express";
 import { Request, Response } from "express";
 import { authRouter } from "./routes/auth.routes";
 import { userRouter } from "./routes/user.routes";
 import cookieParser from "cookie-parser";
 import { errorHandler } from "./middleware/error.middleware";
 import DatabaseManager from "./database-manager";
-import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
+import { DataSourceOptions } from "typeorm";
+import { Server } from "http";
+import cors from "cors";
+
+dotenv.config();
+const {ALLOWED_ORIGINS} = process.env;
 
 export default class ExpressApp {
     app: Express;
     dbManager: DatabaseManager;
 
-    private server: any;
+    private server: Server;
 
     /**
-     * Create Express app and set PostgresConnectionOptions in the DatabaseManager.
-     * @param PostgresConnectionOptions 
+     * Create Express app and set DataSourceOptions in the DatabaseManager.
+     * @param DataSourceOptions 
      */
-    constructor(connectionOptions: PostgresConnectionOptions) {
+    constructor(connectionOptions: DataSourceOptions) {
         this.app = express();
         this.dbManager = new DatabaseManager(connectionOptions);
     }
@@ -46,6 +52,7 @@ export default class ExpressApp {
 
     private setupMiddleware(): void {
         this.app.use(express.json());
+        this.app.use(cors({origin: ALLOWED_ORIGINS}));
         this.app.use(cookieParser());
         this.app.use(errorHandler);
     }
@@ -54,7 +61,7 @@ export default class ExpressApp {
         this.app.use("/auth", authRouter);
         this.app.use("/api", userRouter);
 
-        this.app.get("*", (req: Request, res: Response) => {
+        this.app.get("/", (req: Request, res: Response) => {
             res.status(404).json({ message: "Resource not found" });
         });
     }

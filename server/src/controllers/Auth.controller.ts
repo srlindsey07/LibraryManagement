@@ -29,8 +29,12 @@ export default class AuthController{
             }
 
             const user = await this.userRepository.findOne({ where: { email } });
-            const isPasswordValid = encrypt.comparePassword(user.password, password);
-            if (!user || !isPasswordValid) {
+            if (!user) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            const isPasswordValid = encrypt.comparePassword(user?.password, password);
+            if (!isPasswordValid) {
                 return res.status(401).json({ message: "Unauthorized" });
             }
 
@@ -49,10 +53,7 @@ export default class AuthController{
                     secure: process.env.NODE_ENV === "prod"
                 })
                 .status(200)
-                .json({
-                    message: "Login successful",
-                    userResponse
-                });
+                .json(userResponse);
         } catch (error) {
             console.error(error);
             return res.status(500);

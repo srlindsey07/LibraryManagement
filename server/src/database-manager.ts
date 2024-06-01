@@ -1,26 +1,25 @@
 import { DataSource } from "typeorm";
+import type { DataSourceOptions } from "typeorm";
 import dotenv from "dotenv";
 import User from "./entities/User";
-import { createDatabase, DatabaseCreateContext, dropDatabase } from "typeorm-extension";
-import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 import { createDatabaseIfNotExists } from "./helpers/database";
 
 dotenv.config();
 const { DB_DEFAULT_DATABASE } = process.env;
 
 export default class DatabaseManager {
-    private connectionOptions: PostgresConnectionOptions = null;
+    private connectionOptions: DataSourceOptions = null;
     private dataSource: DataSource = null;
     private initializeAttempts = 0;
 
-    constructor(private config: PostgresConnectionOptions) {
+    constructor(private config: DataSourceOptions) {
         this.connectionOptions = config;
     }
 
     /**
-     * @returns connectionOptions {PostgresConnectionOptions} The current connection configuration options.
+     * @returns connectionOptions {DataSourceOptions} The current connection configuration options.
      */
-    getConnectionOptions(): PostgresConnectionOptions {
+    getConnectionOptions(): DataSourceOptions {
         return this.connectionOptions;
     }
 
@@ -45,23 +44,18 @@ export default class DatabaseManager {
 
         this.dataSource = new DataSource({
             ...this.connectionOptions,
-            entities: [User]
+            // entities: [User],
         });
+
+        if (!this.dataSource.isInitialized) {
+            await createDatabaseIfNotExists(this.connectionOptions, DB_DEFAULT_DATABASE)
+                .catch((error) => console.error("Could not create database"));
+        }
 
         await this.dataSource
             .initialize()
-            .then(async () => {
-                console.log("Data source initialized");
-            })
-            .catch(async (error) => {
-                // 3D000 is invalid catalog name
-                if (error.code === "3D000") {
-                    await createDatabaseIfNotExists(this.connectionOptions, DB_DEFAULT_DATABASE);
-                    await this.initializeDataSource();
-                } else {
-                    console.error(error.message);
-                }
-            });
+            .then(() => console.log("INITIALIZED!"))        
+            .catch((error) => console.log(error))
     }
 
     async disconnectDataSource() {

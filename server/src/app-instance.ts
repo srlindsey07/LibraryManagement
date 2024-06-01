@@ -1,5 +1,5 @@
+import type { DataSourceOptions } from "typeorm";
 import ExpressApp from "./app";
-import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 
 let expressAppInstance: ExpressApp;
 
@@ -8,7 +8,7 @@ let expressAppInstance: ExpressApp;
  * @returns ExpressApp - New Express app instance.
  */
 export const createExpressAppInstance = (
-    connectionOptions: PostgresConnectionOptions,
+    connectionOptions: DataSourceOptions,
 ): ExpressApp => {
     expressAppInstance = new ExpressApp(connectionOptions);
     return expressAppInstance;
