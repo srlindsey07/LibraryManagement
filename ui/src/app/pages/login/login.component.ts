@@ -5,6 +5,8 @@ import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { AuthService } from "../../services/auth.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { Router } from "@angular/router";
+import { AuthStore } from "../../stores/auth.store";
 
 @Component({
     selector: "app-login",
@@ -17,6 +19,8 @@ import { HttpErrorResponse } from "@angular/common/http";
 export class LoginComponent {
     private formBuilder: FormBuilder = inject(FormBuilder);
     private authService: AuthService = inject(AuthService);
+    private authStore: AuthStore = inject(AuthStore);
+    private router: Router = inject(Router);
 
     loginForm = new FormGroup({
         email: new FormControl(""),
@@ -25,9 +29,9 @@ export class LoginComponent {
     errorMessages = formErrorMessages;
 
     $isLoading = signal<boolean>(false);
-    $isLoginSuccessful = signal<boolean>(false);
     $formErrorMessage = signal<string>("");
-    $user = signal<any>("");
+    $isAuthenticated = this.authStore.$isAuthenticated;
+    $user = this.authStore.$user;
 
     constructor() {
         this.loginForm = this.formBuilder.group(
@@ -66,8 +70,11 @@ export class LoginComponent {
             this.$isLoading.set(true);
             this.authService.login(this.email!.value!, this.password!.value!).subscribe({
                 next: data => {
-                    this.$isLoginSuccessful.set(true);
-                    this.$user.set(data);
+                    this.authStore.setIsAuthenticated(true);
+                    this.authStore.setUser(data);
+                    // this.$isLoginSuccessful.set(true);
+                    // this.$user.set(data);
+                    this.router.navigate(["/dashboard"]);
                 },
                 error: err => {
                     if (err instanceof HttpErrorResponse && err.status === 401) {

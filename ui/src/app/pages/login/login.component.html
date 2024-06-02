@@ -1,4 +1,4 @@
-<div class="login-page-wrapper px-3 vh-100 d-flex justify-content-center align-items-center">
+<div class="login-page-wrapper w-100 h-100 d-flex justify-content-center align-items-center">
     <div class="login-container card">
         <div class="card-body">
             <img
@@ -101,8 +101,6 @@
                     data-testId="formErrorMessage">
                     {{ $formErrorMessage() }}
                 </div>
-                } @if ($isLoginSuccessful()) {
-                <p>Hello, {{ $user().first_name }}! You are now logged in!</p>
                 }
             </form>
 

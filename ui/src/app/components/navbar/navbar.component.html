@@ -1,0 +1,27 @@
+<div class="navbar navbar-expand-md navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+        <a
+            class="navbar-brand"
+            [routerLink]="'.'">
+            <img
+                src="../assets/images/logo-horizontal.svg"
+                alt="Lee County Public Library" />
+        </a>
+
+        <div id="navigation">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a
+                        class="nav-link d-flex align-items-center"
+                        [routerLink]="'.'"
+                        (click)="menuCollapsed = true">
+                        <fa-icon
+                            [icon]="circleUserIcon"
+                            class="fs-3 me-2"></fa-icon>
+                        <span>{{ $user().first_name || "Guest" }}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

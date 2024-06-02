@@ -2,8 +2,12 @@
 @import "bootstrap/scss/mixins";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
-$denim: #415976;
+// BS SETTINGS
+$enable-shadows: true;
 
+// CUSTOM COLRS
+$denim: #415976;
+$denim-bg: tint-color($denim, 97%);
 $denim-50: tint-color($denim, 93%);
 $denim-100: tint-color($denim, 90%);
 $denim-200: tint-color($denim, 70%);
@@ -14,8 +18,8 @@ $denim-600: shade-color($denim, 10%);
 $denim-700: shade-color($denim, 25%);
 $denim-800: shade-color($denim, 30%);
 $denim-900: shade-color($denim, 50%);
-
 $denims: (
+    "denim-50": $denim-50,
     "denim-100": $denim-100,
     "denim-200": $denim-200,
     "denim-300": $denim-300,
@@ -27,22 +31,32 @@ $denims: (
     "denim-900": $denim-900,
 );
 
-// Override Bootstrap's primary color
+// COLORS
 $primary: $denim-700;
 $secondary: $denim-300;
 $light: $denim-50;
 $dark: $denim-900;
 
+$link-color: $denim-700;
+$headings-color: $denim-700;
+$body-color: $denim-700;
+$body-bg: $denim-bg;
+
 // FONTS
 $font-family-sans-serif: "Montserrat", sans-serif;
 $font-family-base: $font-family-sans-serif;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
 
 // ANIMATIONS
 $spinner-animation-speed: 1.4s;
 
-:root {
-    --bs-heading-color: #{$denim-900} !important;
-    --bs-body-color: #{$denim-700} !important;
-
-    // animations
-}
+$position-values: (
+    0: 0,
+    50: 50%,
+    100: 100%,
+    unset: unset,
+);

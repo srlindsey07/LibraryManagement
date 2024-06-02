@@ -1,6 +1,53 @@
 @import "./styles/variables"; // keep after BS mixin/function imports
 @import "bootstrap/scss/bootstrap"; // keep at end of all BS overrides
 
+$utilities: map-merge(
+    $utilities,
+    (
+        "position": (
+            property: position,
+            responsive: true,
+            values: static relative absolute fixed sticky unset,
+        ),
+        "start":
+            map-merge(
+                map-get($utilities, "start"),
+                (
+                    responsive: true,
+                )
+            ),
+        "end":
+            map-merge(
+                map-get($utilities, "end"),
+                (
+                    responsive: true,
+                )
+            ),
+        "bottom":
+            map-merge(
+                map-get($utilities, "bottom"),
+                (
+                    responsive: true,
+                )
+            ),
+        "width":
+            map-merge(
+                map-get($utilities, "width"),
+                (
+                    responsive: true,
+                )
+            ),
+        "height":
+            map-merge(
+                map-get($utilities, "height"),
+                (
+                    responsive: true,
+                )
+            ),
+    )
+);
+@import "bootstrap/scss/utilities/api";
+
 @layer component, reset;
 
 /* prettier-ignore */
@@ -35,5 +82,6 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
     }
     body {
         margin: 0;
+        box-sizing: border-box;
     }
 }
