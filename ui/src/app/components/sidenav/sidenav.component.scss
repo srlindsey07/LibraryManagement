@@ -2,27 +2,32 @@
 @use "bootstrap/scss/bootstrap-grid" as grid;
 
 .sidenav {
-    a {
-        color: variables.$denim-200;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-decoration: none;
-        padding: 0.75rem;
-        text-align: center;
-        text-transform: uppercase;
+    ul.navbar-nav {
+        li {
+            flex: 25% 1 1;
+            a {
+                color: variables.$denim-200;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-decoration: none;
+                padding: 0.75rem;
+                text-align: center;
+                text-transform: uppercase;
 
-        .ng-fa-icon {
-            font-size: 1.15rem;
-        }
+                .ng-fa-icon {
+                    font-size: 1.15rem;
+                }
 
-        span {
-            font-size: 0.875rem;
-        }
+                span {
+                    font-size: 0.875rem;
+                }
 
-        &:hover {
-            background-color: variables.$denim-700;
-            color: variables.$denim-100;
+                &:hover {
+                    background-color: variables.$denim-700;
+                    color: variables.$denim-100;
+                }
+            }
         }
     }
 
