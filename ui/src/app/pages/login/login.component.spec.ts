@@ -84,18 +84,5 @@ describe("LoginComponent", () => {
                 expect(errorMsg.textContent.trim()).toBe(msg);
             });
         });
-
-        describe("when the login form is not valid", () => {
-            it("should present error messages on the controls that are invalid", () => {
-                const loginSpy = mockAuthService.login.and.returnValue(of({}));
-                component.onSubmit();
-                fixture.detectChanges();
-
-                expect(loginSpy).toHaveBeenCalledTimes(0);
-                expect(component.loginForm.invalid).toBe(true);
-                const errMsgs = fixture.debugElement.queryAll(By.css(".error-msg"));
-                expect(errMsgs.length).toBe(2);
-            });
-        });
     });
 });

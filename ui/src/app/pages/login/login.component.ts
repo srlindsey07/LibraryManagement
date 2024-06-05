@@ -55,6 +55,8 @@ export class LoginComponent {
         );
     }
 
+    // TODO: Clear session storage oninit?
+
     get email() {
         return this.loginForm.get("email");
     }
@@ -71,6 +73,7 @@ export class LoginComponent {
             this.authService.login(this.email!.value!, this.password!.value!).subscribe({
                 next: data => {
                     this.authStore.setIsAuthenticated(true);
+                    // TODO: SET TOKEN, USERNAME and ROLE in session storage
                     this.authStore.setUser(data);
                     // this.$isLoginSuccessful.set(true);
                     // this.$user.set(data);

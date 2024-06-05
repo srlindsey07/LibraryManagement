@@ -31,7 +31,7 @@
                     @if(email?.invalid && (email?.touched || email?.dirty)) { @if (email?.hasError('required')) {
                     <div
                         id="emailError"
-                        class="error-msg"
+                        class="text-danger"
                         role="alert"
                         data-testId="errorMsg">
                         {{ errorMessages.required("Email") }}
@@ -39,7 +39,7 @@
                     } @else if (email?.hasError('minlength')) {
                     <div
                         id="emailError"
-                        class="error-msg"
+                        class="text-danger"
                         role="alert">
                         {{ errorMessages.minlength("Email", 8) }}
                     </div>
@@ -65,14 +65,14 @@
                     (password?.hasError('required')) {
                     <div
                         id="passwordError"
-                        class="error-msg"
+                        class="text-danger"
                         role="alert">
                         {{ errorMessages.required("Password") }}
                     </div>
                     } @else if (password?.hasError('minlength')) {
                     <div
                         id="passwordError"
-                        class="error-msg"
+                        class="text-danger"
                         role="alert">
                         {{ errorMessages.minlength("Password", 8) }}
                     </div>
@@ -96,7 +96,7 @@
 
                 @if ($formErrorMessage()) {
                 <div
-                    class="error-msg"
+                    class="text-danger"
                     role="alert"
                     data-testId="formErrorMessage">
                     {{ $formErrorMessage() }}

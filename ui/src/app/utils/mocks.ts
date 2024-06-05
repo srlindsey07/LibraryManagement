@@ -1,6 +1,26 @@
+import { Routes } from "@angular/router";
 import { IUser } from "../types/User.model";
 import { UserRole } from "../types/UserRole.enum";
 import { faker } from "@faker-js/faker";
+import { AppPath } from "../app.routes";
+
+export class MockComponent {}
+
+export const mockRoutes: Routes = [
+    {
+        path: "",
+        pathMatch: "full",
+        redirectTo: AppPath.LOGIN,
+    },
+    {
+        path: AppPath.LOGIN,
+        component: MockComponent,
+    },
+    {
+        path: AppPath.DASHBOARD,
+        component: MockComponent,
+    },
+];
 
 export const mockUser = (): IUser => {
     return {

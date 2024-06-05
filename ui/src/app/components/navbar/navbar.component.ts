@@ -17,15 +17,9 @@ import { IUser } from "../../types/User.model";
 export class NavbarComponent {
     private authStore = inject(AuthStore);
 
-    menuCollapsed: boolean = true;
     circleUserIcon = iconLibary.circleUser;
-    barsIcon = iconLibary.bars;
 
     $user: Signal<IUser> = this.authStore.$user;
 
     constructor() {}
-
-    menuClose() {
-        this.menuCollapsed = true;
-    }
 }

@@ -1,24 +1,30 @@
-<nav class="sidenav navbar bg-dark p-0 position-fixed bottom-0 start-0 end-0 position-lg-unset">
+<nav class="sidenav navbar bg-dark position-fixed bottom-0 start-0 end-0 position-lg-unset h-lg-100">
     <div
-        class="w-100 h-md-100"
+        class="w-100"
         id="navbarNav">
         <ul class="navbar-nav flex-row flex-lg-column justify-content-around">
             <li>
-                <a [routerLink]="'.'">
+                <a
+                    [routerLink]="'.'"
+                    class="nav-link focus-ring-inset">
                     <fa-icon [icon]="repeatIcon"></fa-icon>
                     <span>Circulation</span>
                 </a>
             </li>
 
             <li>
-                <a [routerLink]="'.'">
+                <a
+                    class="nav-link focus-ring-inset"
+                    [routerLink]="'.'">
                     <fa-icon [icon]="usersIcon"></fa-icon>
                     <span>Users</span>
                 </a>
             </li>
 
             <li>
-                <a [routerLink]="'.'">
+                <a
+                    class="nav-link focus-ring-inset"
+                    [routerLink]="'.'">
                     <fa-icon [icon]="bookIcon"></fa-icon>
                     <span>Books & Search</span>
                 </a>

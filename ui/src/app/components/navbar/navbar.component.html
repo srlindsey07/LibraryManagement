@@ -1,7 +1,7 @@
 <div class="navbar navbar-expand-md navbar-light bg-light shadow-sm">
     <div class="container-fluid">
         <a
-            class="navbar-brand"
+            class="navbar-brand focus-ring"
             [routerLink]="'.'">
             <img
                 src="../assets/images/logo-horizontal.svg"
@@ -10,17 +10,19 @@
 
         <div id="navigation">
             <ul class="navbar-nav ms-auto">
+                @if ($user()) {
                 <li class="nav-item">
                     <a
                         class="nav-link d-flex align-items-center"
                         [routerLink]="'.'"
-                        (click)="menuCollapsed = true">
+                        data-testId="userProfileLink">
                         <fa-icon
                             [icon]="circleUserIcon"
                             class="fs-3 me-2"></fa-icon>
                         <span>{{ $user().first_name || "Guest" }}</span>
                     </a>
                 </li>
+                }
             </ul>
         </div>
     </div>

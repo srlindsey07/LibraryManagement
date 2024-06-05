@@ -1,12 +1,13 @@
-@use "../../../styles/variables" as variables;
-@use "bootstrap/scss/bootstrap-grid" as grid;
+@import "../../../styles/variables";
 
 .sidenav {
+    padding: 0 1rem;
+
     ul.navbar-nav {
         li {
             flex: 25% 1 1;
-            a {
-                color: variables.$denim-200;
+            .nav-link {
+                color: $denim-100;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -24,28 +25,9 @@
                 }
 
                 &:hover {
-                    background-color: variables.$denim-700;
-                    color: variables.$denim-100;
+                    background-color: $denim-700;
+                    color: $denim-50;
                 }
-            }
-        }
-    }
-
-    @include grid.media-breakpoint-up(lg) {
-        height: 100%;
-        padding: 1rem 0 !important;
-        width: 200px;
-        align-items: start !important;
-
-        a {
-            padding: 1rem 0.75rem;
-
-            .ng-fa-icon {
-                font-size: 1.5rem;
-            }
-
-            span {
-                font-size: 1rem;
             }
         }
     }

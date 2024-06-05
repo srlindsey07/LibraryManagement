@@ -1,6 +1,26 @@
-@import "./styles/variables"; // keep after BS mixin/function imports
-@import "bootstrap/scss/bootstrap"; // keep at end of all BS overrides
+@import "../node_modules/bootstrap/scss/functions";
 
+@import "./styles/variables";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "./styles/maps";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/utilities";
+@import "./styles/bs-components";
+
+.nav-link:focus-visible {
+    box-shadow: $focus-ring-box-shadow;
+}
+.bg-dark {
+    .nav-link:focus-visible {
+        box-shadow: $focus-ring-box-shadow-light;
+
+        &.focus-ring-inset {
+            box-shadow: $focus-ring-box-shadow-light inset;
+        }
+    }
+}
 $utilities: map-merge(
     $utilities,
     (
@@ -48,7 +68,14 @@ $utilities: map-merge(
 );
 @import "bootstrap/scss/utilities/api";
 
-@layer component, reset;
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    box-sizing: border-box;
+}
 
 /* prettier-ignore */
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
@@ -59,29 +86,12 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
     font-weight: 500;
 }
 
-@layer component {
-    .error-msg {
-        color: map-get($theme-colors, "danger");
-    }
+.btn {
+    position: relative;
 
-    .btn {
-        position: relative;
-
-        .loading-icon {
-            position: absolute;
-            top: 0.5rem;
-            margin-left: 0.5rem;
-        }
-    }
-}
-
-@layer reset {
-    html,
-    body {
-        height: 100%;
-    }
-    body {
-        margin: 0;
-        box-sizing: border-box;
+    .loading-icon {
+        position: absolute;
+        top: 0.5rem;
+        margin-left: 0.5rem;
     }
 }

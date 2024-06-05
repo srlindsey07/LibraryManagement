@@ -1,24 +1,23 @@
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/mixins";
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@use "sass:color";
 
 // BS SETTINGS
 $enable-shadows: true;
 
 // CUSTOM COLRS
 $denim: #415976;
-$denim-bg: tint-color($denim, 97%);
-$denim-50: tint-color($denim, 93%);
-$denim-100: tint-color($denim, 90%);
-$denim-200: tint-color($denim, 70%);
-$denim-300: tint-color($denim, 45%);
-$denim-400: tint-color($denim, 20%);
+$denim-10: lighten($denim, 62%);
+$denim-50: lighten($denim, 57%);
+$denim-100: lighten($denim, 43%);
+$denim-200: lighten($denim, 30%);
+$denim-300: lighten($denim, 20%);
+$denim-400: lighten($denim, 10%);
 $denim-500: $denim;
-$denim-600: shade-color($denim, 10%);
-$denim-700: shade-color($denim, 25%);
-$denim-800: shade-color($denim, 30%);
-$denim-900: shade-color($denim, 50%);
+$denim-600: darken($denim, 10%);
+$denim-700: darken($denim, 15%);
+$denim-800: darken($denim, 20%);
+$denim-900: darken($denim, 25%);
 $denims: (
+    "denim-10": $denim-10,
     "denim-50": $denim-50,
     "denim-100": $denim-100,
     "denim-200": $denim-200,
@@ -30,33 +29,37 @@ $denims: (
     "denim-800": $denim-800,
     "denim-900": $denim-900,
 );
+// @debug $denims;
+// ("denim-10": #f5f7f9, "denim-50": #e8ecf2, "denim-100": #bac8d9, "denim-200": #8fa6c1, "denim-300": #6e8baf, "denim-400": #537297, "denim-500": #415976, "denim-600": #2f4055, "denim-700": #263445, "denim-800": #1d2734, "denim-900": #141b24)
 
 // COLORS
-$primary: $denim-700;
+$primary: $denim-600;
 $secondary: $denim-300;
 $light: $denim-50;
-$dark: $denim-900;
+$dark: $denim-800;
+$color-contrast-dark: $denim-900;
+$color-contrast-light: $denim-10;
 
-$link-color: $denim-700;
-$headings-color: $denim-700;
-$body-color: $denim-700;
-$body-bg: $denim-bg;
+$link-color: $denim-600;
+$headings-color: $denim-500;
+$body-color: $denim-600;
+$body-bg: $denim-10;
 
 // FONTS
 $font-family-sans-serif: "Montserrat", sans-serif;
 $font-family-base: $font-family-sans-serif;
-$font-weight-light: 300;
-$font-weight-normal: 400;
-$font-weight-medium: 500;
-$font-weight-semibold: 600;
-$font-weight-bold: 700;
 
 // ANIMATIONS
 $spinner-animation-speed: 1.4s;
 
-$position-values: (
-    0: 0,
-    50: 50%,
-    100: 100%,
-    unset: unset,
-);
+// FOCUS STYLE
+$focus-ring-width: 0.25rem;
+$focus-ring-opacity: 0.25;
+$focus-ring-blur: 0;
+$focus-ring-color: rgba($primary, $focus-ring-opacity);
+$focus-ring-color-light: rgba($light, 0.4);
+$focus-ring-box-shadow: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color;
+$focus-ring-box-shadow-light: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color-light;
+
+:root {
+}
