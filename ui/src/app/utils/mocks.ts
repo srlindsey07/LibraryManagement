@@ -10,14 +10,26 @@ export const mockRoutes: Routes = [
     {
         path: "",
         pathMatch: "full",
-        redirectTo: AppPath.LOGIN,
+        redirectTo: AppPath.BOOKS,
     },
     {
         path: AppPath.LOGIN,
         component: MockComponent,
     },
     {
-        path: AppPath.DASHBOARD,
+        path: AppPath.PROFILE,
+        component: MockComponent,
+    },
+    {
+        path: AppPath.USERS,
+        component: MockComponent,
+    },
+    {
+        path: AppPath.BOOKS,
+        component: MockComponent,
+    },
+    {
+        path: AppPath.CIRCULATION,
         component: MockComponent,
     },
 ];

@@ -1,13 +1,1 @@
-@if (!isOnLoginPage) {
-<app-navbar></app-navbar>
-}
-
-<div class="main-content-wrapper d-flex w-100">
-    @if (!isOnLoginPage) {
-    <app-sidenav></app-sidenav>
-    }
-
-    <main class="p-3 w-100">
-        <router-outlet></router-outlet>
-    </main>
-</div>
+<router-outlet></router-outlet>

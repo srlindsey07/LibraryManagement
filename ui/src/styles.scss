@@ -9,16 +9,9 @@
 @import "../node_modules/bootstrap/scss/utilities";
 @import "./styles/bs-components";
 
-.nav-link:focus-visible {
-    box-shadow: $focus-ring-box-shadow;
-}
 .bg-dark {
     .nav-link:focus-visible {
         box-shadow: $focus-ring-box-shadow-light;
-
-        &.focus-ring-inset {
-            box-shadow: $focus-ring-box-shadow-light inset;
-        }
     }
 }
 $utilities: map-merge(

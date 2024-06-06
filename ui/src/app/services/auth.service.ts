@@ -1,22 +1,33 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import { environment } from "../../environments/env.dev";
 import { Observable } from "rxjs";
 import { IUser } from "../types/User.model";
+import { UserStore } from "../stores/user.store";
 
 @Injectable({
     providedIn: "root",
 })
 export class AuthService {
     private readonly http: HttpClient = inject(HttpClient);
+    private readonly userStore: UserStore = inject(UserStore);
     private readonly authUrl = environment.authApiUrl;
-    private readonly ACCESS_TOKEN = "access_token";
-
-    private httpOptions = {
+    private readonly USER_ID = "user_id";
+    private readonly httpOptions = {
         headers: new HttpHeaders({ "Content-Type": "application/json" }),
     };
 
-    constructor() {}
+    private $isAuthenticated = signal<boolean>(false);
+
+    constructor() {
+        this.$isAuthenticated.set(this.hasSession());
+    }
+
+    readonly isAuthenticated = this.$isAuthenticated.asReadonly();
+
+    setIsAuthenticated(value: boolean): void {
+        this.$isAuthenticated.set(value);
+    }
 
     login(email: string, password: string): Observable<IUser> {
         const body = {
@@ -28,7 +39,13 @@ export class AuthService {
 
     // TODO: Implement in API
     refreshToken() {
-        return this.http.post(`${this.authUrl}/refresh`, {}, this.httpOptions);
+        return this.http.post<any>(`${this.authUrl}/refresh`, {}, this.httpOptions);
+    }
+
+    logout(): void {
+        this.clearSession();
+        this.userStore.setUser({} as IUser);
+        this.$isAuthenticated.set(false);
     }
 
     /////////////////////
@@ -36,23 +53,16 @@ export class AuthService {
     /////////////////////
     clearSession(): void {
         window.sessionStorage.clear();
+        this.$isAuthenticated.set(false);
     }
 
-    saveToken(token: string): void {
-        window.sessionStorage.removeItem(this.ACCESS_TOKEN);
-        window.sessionStorage.setItem(this.ACCESS_TOKEN, token);
+    hasSession(): boolean {
+        return !!window.sessionStorage.getItem(this.USER_ID);
     }
 
-    getToken(): string | {} {
-        const token = window.sessionStorage.getItem(this.ACCESS_TOKEN);
-        if (token) {
-            return token;
-        }
-        return {};
-    }
-
-    isLoggedIn(): boolean {
-        const token = window.sessionStorage.getItem(this.ACCESS_TOKEN);
-        return !!token;
+    saveUserId(id: number): void {
+        window.sessionStorage.removeItem(this.USER_ID);
+        window.sessionStorage.setItem(this.USER_ID, id.toString());
+        this.$isAuthenticated.set(true);
     }
 }

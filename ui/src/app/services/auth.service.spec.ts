@@ -6,9 +6,11 @@ import { environment } from "../../environments/env.dev";
 import { mockUser } from "../utils/mocks";
 import { faker } from "@faker-js/faker";
 import { HttpErrorResponse } from "@angular/common/http";
+import { UserStore } from "../stores/user.store";
 
 describe("AuthService", () => {
     let authService: AuthService;
+    let userStore: UserStore;
     let controller: HttpTestingController;
     const apiUrl = environment.authApiUrl;
     let mockSessionStorage: MockSessionStorage;
@@ -20,11 +22,18 @@ describe("AuthService", () => {
             imports: [HttpClientTestingModule],
         });
         authService = TestBed.inject(AuthService);
+        userStore = TestBed.inject(UserStore);
         controller = TestBed.inject(HttpTestingController);
     });
 
     it("should be created", () => {
         expect(authService).toBeTruthy();
+    });
+
+    it("setIsAuthenticated() should set the value of isAuthenticated", () => {
+        authService.setIsAuthenticated(true);
+
+        expect(authService.isAuthenticated()).toBe(true);
     });
 
     describe("login()", () => {
@@ -65,43 +74,64 @@ describe("AuthService", () => {
         });
     });
 
+    it("logout() should clear the session and remove user data", () => {
+        const user = mockUser();
+        mockSessionStorage.setValue({ user_id: user.id.toString() });
+        userStore.setUser(user);
+        authService.setIsAuthenticated(true);
+
+        expect(mockSessionStorage.value()).toEqual({ user_id: user.id.toString() });
+        expect(userStore.$user()).toEqual(user);
+        expect(authService.isAuthenticated()).toBe(true);
+
+        authService.logout();
+
+        expect(mockSessionStorage.value()).toEqual({});
+        expect(userStore.$user()).toEqual({});
+        expect(authService.isAuthenticated()).toBe(false);
+    });
+
     describe("Session storage management", () => {
-        const ACCESS_TOKEN = "access_token";
-
-        it("saveToken() should save the provided token to session storage", () => {
-            const token = faker.string.alphanumeric(15);
-
-            authService.saveToken(token);
-
-            expect(mockSessionStorage.value()).toEqual({ access_token: token });
+        beforeEach(() => {
+            mockSessionStorage.setValue({});
         });
 
-        it("getToken() should return the access token if it exists", () => {
-            const expectedToken = faker.string.alphanumeric(15);
-            mockSessionStorage.setValue({ access_token: expectedToken });
+        it("clearSession() should clear session storage", () => {
+            mockSessionStorage.setValue({ user_id: "test" });
+            authService.setIsAuthenticated(true);
 
-            const actualToken = authService.getToken();
+            expect(mockSessionStorage.value()).toEqual({ user_id: "test" });
+            expect(authService.isAuthenticated()).toBe(true);
 
-            expect(actualToken).toEqual(expectedToken);
+            authService.clearSession();
+
+            expect(mockSessionStorage.value()).toEqual({});
+            expect(authService.isAuthenticated()).toBe(false);
         });
 
-        it("getToken() should return an empty object it access token does not exist", () => {
-            const actualToken = authService.getToken();
+        it("saveUserId() should save the user's id to session storage", () => {
+            const userId = faker.number.int({ min: 1, max: 1000 });
 
-            expect(actualToken).toEqual({});
+            authService.saveUserId(userId);
+
+            expect(mockSessionStorage.value()).toEqual({ user_id: userId.toString() });
+            expect(authService.isAuthenticated()).toBe(true);
         });
 
-        it("isLoggedIn() should return true if an access token exists in session storage", () => {
-            const expectedToken = faker.string.alphanumeric(15);
-            mockSessionStorage.setValue({ access_token: expectedToken });
+        describe("hasSession()", () => {
+            beforeEach(() => {
+                mockSessionStorage.setValue({});
+            });
 
-            const isLoggedIn = authService.isLoggedIn();
-            expect(isLoggedIn).toBe(true);
-        });
+            it("should return true if the user has an active session", () => {
+                mockSessionStorage.setValue({ user_id: "test" });
 
-        it("isLoggedIn() should return true if an access token exists in session storage", () => {
-            const isLoggedIn = authService.isLoggedIn();
-            expect(isLoggedIn).toBe(false);
+                expect(authService.hasSession()).toBe(true);
+            });
+
+            it("should return true if the user does not have an active session", () => {
+                expect(authService.hasSession()).toBe(false);
+            });
         });
     });
 });

@@ -14,15 +14,11 @@ describe("LoginComponent", () => {
     let mockAuthService: any;
 
     beforeEach(async () => {
-        mockAuthService = jasmine.createSpyObj("AuthService", ["login"]);
+        mockAuthService = jasmine.createSpyObj("AuthService", ["login", "clearSession", "saveUserId"]);
         await TestBed.configureTestingModule({
             imports: [LoginComponent],
             providers: [{ provide: AuthService, useValue: mockAuthService }],
-        }).overrideComponent(LoginComponent, {
-            // ChangeDetectionStrategy.OnPush does not allow fixture.detectChanges()
-            // to work more than once in a test
-            set: { changeDetection: ChangeDetectionStrategy.Default },
-        });
+        }).createComponent(LoginComponent);
 
         fixture = TestBed.createComponent(LoginComponent);
         component = fixture.componentInstance;
@@ -53,12 +49,12 @@ describe("LoginComponent", () => {
             });
 
             it("should set $user to the user data returned from the service", () => {
-                const user = mockUser();
-                mockAuthService.login.and.returnValue(of(user));
+                const expectedUser = mockUser;
+                mockAuthService.login.and.returnValue(of(expectedUser));
 
                 component.onSubmit();
 
-                expect(component.$user()).toBe(user);
+                expect(component.$user()).toEqual(expectedUser);
             });
 
             it("should display the authentication failed message if authService.login() returns a 401", async () => {

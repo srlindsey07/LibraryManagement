@@ -1,12 +1,13 @@
 import { authErrorMessages, formErrorMessages } from "./../../utils/messages";
-import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { AuthService } from "../../services/auth.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { AuthStore } from "../../stores/auth.store";
+import { AppPath } from "src/app/app.routes";
+import { UserStore } from "src/app/stores/user.store";
 
 @Component({
     selector: "app-login",
@@ -16,10 +17,10 @@ import { AuthStore } from "../../stores/auth.store";
     styleUrl: "./login.component.scss",
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder = inject(FormBuilder);
     private authService: AuthService = inject(AuthService);
-    private authStore: AuthStore = inject(AuthStore);
+    private userStore: UserStore = inject(UserStore);
     private router: Router = inject(Router);
 
     loginForm = new FormGroup({
@@ -30,8 +31,7 @@ export class LoginComponent {
 
     $isLoading = signal<boolean>(false);
     $formErrorMessage = signal<string>("");
-    $isAuthenticated = this.authStore.$isAuthenticated;
-    $user = this.authStore.$user;
+    $user = this.userStore.$user;
 
     constructor() {
         this.loginForm = this.formBuilder.group(
@@ -55,7 +55,9 @@ export class LoginComponent {
         );
     }
 
-    // TODO: Clear session storage oninit?
+    ngOnInit(): void {
+        this.authService.clearSession();
+    }
 
     get email() {
         return this.loginForm.get("email");
@@ -71,13 +73,11 @@ export class LoginComponent {
         if (this.loginForm.valid) {
             this.$isLoading.set(true);
             this.authService.login(this.email!.value!, this.password!.value!).subscribe({
-                next: data => {
-                    this.authStore.setIsAuthenticated(true);
-                    // TODO: SET TOKEN, USERNAME and ROLE in session storage
-                    this.authStore.setUser(data);
-                    // this.$isLoginSuccessful.set(true);
-                    // this.$user.set(data);
-                    this.router.navigate(["/dashboard"]);
+                next: user => {
+                    this.authService.saveUserId(user.id);
+                    this.userStore.setUser(user);
+
+                    this.router.navigate([AppPath.BOOKS]);
                 },
                 error: err => {
                     if (err instanceof HttpErrorResponse && err.status === 401) {

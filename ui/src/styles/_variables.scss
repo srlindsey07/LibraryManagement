@@ -58,8 +58,8 @@ $focus-ring-opacity: 0.25;
 $focus-ring-blur: 0;
 $focus-ring-color: rgba($primary, $focus-ring-opacity);
 $focus-ring-color-light: rgba($light, 0.4);
-$focus-ring-box-shadow: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color;
-$focus-ring-box-shadow-light: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color-light;
+$focus-ring-box-shadow: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color inset;
+$focus-ring-box-shadow-light: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color-light inset;
 
 :root {
 }

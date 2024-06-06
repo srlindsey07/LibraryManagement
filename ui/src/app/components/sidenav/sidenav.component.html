@@ -5,8 +5,8 @@
         <ul class="navbar-nav flex-row flex-lg-column justify-content-around">
             <li>
                 <a
-                    [routerLink]="'.'"
-                    class="nav-link focus-ring-inset">
+                    [routerLink]="circulationLink"
+                    class="nav-link">
                     <fa-icon [icon]="repeatIcon"></fa-icon>
                     <span>Circulation</span>
                 </a>
@@ -14,8 +14,8 @@
 
             <li>
                 <a
-                    class="nav-link focus-ring-inset"
-                    [routerLink]="'.'">
+                    class="nav-link"
+                    [routerLink]="usersLink">
                     <fa-icon [icon]="usersIcon"></fa-icon>
                     <span>Users</span>
                 </a>
@@ -23,8 +23,8 @@
 
             <li>
                 <a
-                    class="nav-link focus-ring-inset"
-                    [routerLink]="'.'">
+                    class="nav-link"
+                    [routerLink]="booksLink">
                     <fa-icon [icon]="bookIcon"></fa-icon>
                     <span>Books & Search</span>
                 </a>
