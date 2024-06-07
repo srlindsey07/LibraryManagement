@@ -14,5 +14,5 @@
       "esModuleInterop": true
    },
    "include": ["src/**/*", "src/data-sources.ts"],
-   "exclude": ["node_modules", "./coverage", "./build", "jest.config.ts"]
+   "exclude": ["node_modules", "./coverage", "./build"]
 }

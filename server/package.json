@@ -9,7 +9,6 @@
       "start": "concurrently \"tsc -w\" \"nodemon build/server.js\"",
       "build": "tsc",
       "start:dev": "ts-node src/server.ts",
-      "test": "jest --coverage",
       "typeorm": "typeorm-ts-node-commonjs"
    },
    "dependencies": {
