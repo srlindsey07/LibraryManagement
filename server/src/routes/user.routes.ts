@@ -8,5 +8,6 @@ const Router = express.Router();
 const UserController = new Controller();
 
 Router.get("/users", authentication, authorization([UserRole.ADMIN]), UserController.getAllUsers.bind(UserController));
+Router.get("/users/:id", authentication, UserController.findById.bind(UserController));
 
 export { Router as userRouter };

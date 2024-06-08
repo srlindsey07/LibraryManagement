@@ -13,12 +13,38 @@ export default class UserController extends BaseController<User> {
 
         // if data is alreeady cached, return it
         // else retreive data from DB, cache it and return it
-        if (data) {
-            return res.status(200).json({ data });
-        } else {
+        // if (data) {
+        //     return res.status(200).json({ data });
+        // } else {
+            // const users = await this.getRepository().find();
+            // cache.put("data", users, 6000);
+            // return res.status(200).json({ data: users });
+        // }
+        try {
             const users = await this.getRepository().find();
-            cache.put("data", users, 6000);
-            return res.status(200).json({ data: users });
+
+            if (!!users) {
+                res.status(200).json(users);
+            } else {
+                res.sendStatus(204);
+            }
+        } catch (error: any) {
+            res.sendStatus(500);
+        }
+    }
+
+    async findById(req: Request, res: Response) {
+        const { id } = req.params;
+        try {
+            const user = await this.getRepository().findOneBy({ id: parseInt(id) });
+
+            if (!!user) {
+                res.status(200).send(user);
+            } else {
+                res.sendStatus(204);
+            }
+        } catch (error: any) {
+            res.sendStatus(500);
         }
     }
 }

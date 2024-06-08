@@ -10,7 +10,7 @@ import { errorHandler } from "./middleware/error.middleware";
 import DatabaseManager from "./database-manager";
 import { DataSourceOptions } from "typeorm";
 import { Server } from "http";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 
 dotenv.config();
 const {ALLOWED_ORIGINS} = process.env;
@@ -18,6 +18,10 @@ const {ALLOWED_ORIGINS} = process.env;
 export default class ExpressApp {
     app: Express;
     dbManager: DatabaseManager;
+    corsOptions: CorsOptions = {
+        credentials: true,
+        origin: ALLOWED_ORIGINS
+    }
 
     private server: Server;
 
@@ -52,7 +56,7 @@ export default class ExpressApp {
 
     private setupMiddleware(): void {
         this.app.use(express.json());
-        this.app.use(cors({origin: ALLOWED_ORIGINS}));
+        this.app.use(cors(this.corsOptions));
         this.app.use(cookieParser());
         this.app.use(errorHandler);
     }
